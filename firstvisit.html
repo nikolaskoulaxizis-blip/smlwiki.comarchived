@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><head> <link rel="icon" type="image/png" href="favicon.png"> <title>SML Wiki - smlwiki.com</title> <meta name="description" content="Welcome to smlwiki.com, the SML wiki! This is a fan-run SuperMarioLogan site that strives to report accurate information and other resources to viewers of the series!"/> </head>
+<style> body { margin: 0; overflow: hidden; } bg { background: #000; position: absolute; width: 100%; height: 100%; }
+#front { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; min-width: 960px; }
+@keyframes appear { 0% {opacity: 0;filter: blur(1px);transform: translateY(-8px);} 100% {opacity: 1;filter: blur(0px);} } @keyframes appear2 { 0% {opacity: 0;filter: blur(1px);} 100% {opacity: 1;filter: blur(0px);} } @keyframes logo { 0% { rotate: -2deg; transform: translateY(0px); } 50% { rotate: 0deg; transform: translateY(-3.35px); } 100% { rotate: 1deg; transform: translateY(0px); } }
+#l1 { opacity: 0; animation: appear 1024ms ease-out forwards; animation-delay: 64ms; } #l2 { opacity: 0; animation: appear 512ms ease-out forwards; animation-delay: 256ms; font-size: 12px; } #l3 { opacity: 0; animation: appear 512ms ease-out forwards; animation-delay: 512ms; }
+#l4 { opacity: 0; animation: appear2 1024ms ease-out forwards; animation-delay: 1024ms; perspective: 768px; position: relative; display: flex; flex-direction: row; width: 240px; justify-content: space-between; left: 50%; transform: translate(-50%); border-image: linear-gradient(#0000 32%, #57a5) 30; border-width: 1px; border-style: solid; padding: 12px; }
+#front { color: #ddd; font-size: 14px; font-family: Segoe UI; text-align: center; } #front span { margin-block: 4px; } img.logo { position: relative; height: 93px; margin-left: 20px; margin-top: 11px; opacity: 0.7; pointer-events: none; }
+.introtextbox { box-shadow: 0 0 0, inset 0 0 0 #fff5; border-radius: 2px; background: #0000; transition: cubic-bezier(.14,.88,.31,.99) 512ms; text-align: left; color: #8ca07a; line-height: 1.24; font-size: 13px; position: relative; left: 50%; transform: translate(-50%); box-sizing: border-box; border: solid 1px #343f2b; width: max-content; padding: 2px; }
+.introtextbox x { font-weight: 400; font-size: 13px; color: #cecfcb; } .introtextbox:hover { box-shadow: 0 6px 12px -8px, inset 2px 29px 3px #8ca07a31; border-bottom: solid 2px #8ca07a33; border-radius: 3px; transform: translate(-50%) rotateX(13deg) translateY(1px) translateZ(12px); } #l3 { perspective: 768px; padding-bottom: 12px; } .button { padding-inline: 12px; cursor: pointer; user-select: none; left: 0; transform: translate(0); } .button:hover { transform: translate(0px) rotateX(11deg) translateY(-2px) translateZ(12px); } 
+.scrolltext { font-family: I know a ghost; color: #d11a; z-index: 2; font-weight: bold; font-size: 20px; line-height: 1.6; letter-spacing: -0.512; width: 100vw; height: 32px; }
+#load { width: 100vw; height: 100vh; background: #000; }
+#st3 { content: ""; display: block; width: 100%; height: 100%; background: linear-gradient(to right, #000 1%, #000 180px, #0000 423px); position: absolute; z-index: 4; }
+.clicked { background: #333; border-color: #976973; box-shadow: 0 6px 12px -2px #fff3; } </style> <bg></bg>
+<initial>
+<div id="front">
+<span id="l1"><img src="smlwikilogo4.jpg" width="232" style="animation: logo 3072ms infinite alternate cubic-bezier(.34,.01,.62,.98);"><div style="margin: auto; width: 256px; height: 1px; background: #aaa; box-shadow: 0 1px 1px 0px #eeea; margin-bottom: 16px;"></div></span> 
+<span id="l2"><span style="font-size: 19px; letter-spacing: -0.2px; font-weight: bold;">This website contains flashing lights and loud noises.</span><br>Sudden visuals could cause a seizure to occur to someone with photosensitive epilepsy</span>
+<span id="l3"><div class="introtextbox" style="margin-top: 36px"><x>Minimum hardware recommendation:</x><br>－ 8 GB of system memory<br>－ A browser & system that supports WebGL</div></span>
+<span id="l4"><div class="introtextbox button" style="filter: hue-rotate(130deg);" id="jumpsconsbtn">Enable old jumpscares</div> <div class="introtextbox button" style="filter: hue-rotate(-60deg); font-weight: bold;" id="start">Proceed</div></span>
+</div> <div style="position: absolute; width: 100%; height: 100vh; background: #0a0a0aaa; backdrop-filter: blur(3px); color: #fff; display: none;" id="screensizewarning"> <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); min-width: 312px; font-size: 16px; font-family: Arial; text-align: center;">Your resolution or device is unsupported.<br><p style="font-size: 13px;">This website is meant to be viewed on a computer<br>and the minimum-supported screen size is <b>1024×768</b></p> <button id="ctnec">Contiune anyway</button> </div>  </div>
+</initial>
+<subsequent style="position: absolute; visibility: hidden;"> 
+<div id="loading-screen" class="fixedsys"></div>
+<div id="load" style="display: flex; flex-direction: column;">
+<div style="position: relative; height: 80px;"><img class="logo" src="global/logo.png"></div>
+<div class="scrolltext" style="margin-top: 24px; border-top: solid 1px #411; border-bottom: solid 1px #411;"><span class="tip"></span></div>
+<div class="scrolltext" id="st2" style="bottom: 0px; right: -256px; position: absolute; border-top: solid 1px #411;"><span class="tip"></span></div>
+</div> <div id="st3" style="bottom: 0px; right: 0; position: absolute; height: 36px;"></div> <script>
+const imageUrls = [ "cursor.png", "cursorclick.png", "houses.png", "dance04.gif", "hillf2.png", "hilla.png", "hillb.png", "house1.png", "house2.png", "mmain-layer0.png", "mmain-layer1.png", "laptop/laptop-open.png", "global/headertop.jpg", "house1-A.png", "house1-B.png", "Siekierablurry.png", "Siekiera.png", "smlwikibg.png", "cast/charred.jpg", "cast/actor-lovell-stanton-83029_large.png", "mail_bill.png", "global/grosstexture.jpg", "characters/user-submissions/woody1.png", "../nez.fyi/sml-assets/marvindoll01.png", "../nez.fyi/sml-assets/marvindoll02.png", "../nez.fyi/sml-assets/marvindoll03.png", "../nez.fyi/sml-assets/marvindoll04.png", "characters/355462214023211.png", "characters/juniorr.png", "mail1.png", "mail2.png" ];
+const soundUrls = ["https://nez.fyi/sml-assets/badfreq_alt.ogg", "https://nez.fyi/sml-assets/hellisreeeel.ogg", "https://nez.fyi/sml-assets/char.ogg", "https://nez.fyi/voidstuff/sounds-general/badfreq2.mp3", "https://nez.fyi/sml-assets/ambience2.ogg", "https://nez.fyi/sml-assets/axe.ogg", "https://nez.fyi/sml-assets/pwr03.ogg", "https://nez.fyi/sml-assets/wrong.ogg", "https://nez.fyi/sml-assets/pianos01.ogg", "https://nez.fyi/sml-assets/CHARLEYYY_rvb-04-Check_the_mail.flac", "https://nez.fyi/sml-assets/mailbox01.ogg", "https://nez.fyi/sml-assets/mailbox02.ogg"];
+
+// FIXED SCRIPT BLOCK: Guarantees redirection to index.html
+function loadimages(urls) { 
+    urls.forEach(url => { const img = new Image(); img.src = url; }); 
+    function float() { 
+        setTimeout(function() { 
+            window.location.href = 'index.html'; 
+        }, 1536); 
+    } 
+    float(); 
+} 
+
+function loadsounds(urls) { urls.forEach(url => { const audio = new Audio(); audio.src = url; }); }
+function showLoadingText() { document.title = "Loading - smlwiki.com"; const loadingText = document.getElementById('loading-screen'); const texts = ["Loading", "Loading.", "Loading..", "Loading..."]; let i = 0; const intervalId = setInterval(() => { loadingText.textContent = texts[i]; i = (i + 1) % texts.length; }, 320); }
+const phrases = ["DELETEHILLF.", "I would eat him.", "Lance likes to have spontaneous meet-ups.", "Marvin is never coming back.", "YTP is dead.",  "Airplane, never seen.",  "Who killed the world?",  "Once a winner, always a winner.", "I have granted kids to hell.", "I made tis webside!"];
+const phrase = phrases[Math.floor(Math.random() * phrases.length)]; const tips = document.querySelectorAll('.tip'); tips.forEach(tip => { const repeatedPhrase = phrase + " \u00A0\u00A0"; tip.textContent = repeatedPhrase.repeat(32); });
+function scrollf(element) { const container = element.parentElement; const scrollw = container.offsetWidth; element.style.position = 'absolute'; element.style.whiteSpace = 'nowrap';
+let starpos = scrollw - 1920; function scroll() { if (starpos < -element.offsetWidth) { starpos = scrollw; } else { starpos -= 1.064; }
+ element.style.transform = `translateX(${starpos}px)`; requestAnimationFrame(scroll); } scroll(); }
+document.querySelectorAll('.scrolltext').forEach(container => { const tip = container.querySelector('.tip'); scrollf(tip); });
+</script>
+<style> @font-face{font-family:'I know a ghost';src:url('https://nez.fyi/sml-assets/IKNOWAGHOST.woff')format('woff');} @font-face{font-family:'Fixedsys';src:url('https://nez.fyi/g-assets/FixedsysExcelsiorIIIb.woff2')format('woff2');}.fixedsys {transform-origin:left;transform:scale(1.423, 1);letter-spacing:-1px;} #loading-screen { position: fixed; bottom: 10px; left: 10px; font-family: Fixedsys; color: #fff; font-size: 16px; z-index: 5; } </style> 
+</subsequent>
+<script> 
+function jscs() { const oldjumpscares = localStorage.getItem("jumpscareconsent"); document.getElementById("jumpsconsbtn").classList.remove("clicked");
+if (oldjumpscares === "true") { document.getElementById("jumpsconsbtn").classList.remove("clicked"); setTimeout(() => { console.log('jumpscareconsent marked as active'); document.getElementById("jumpsconsbtn").classList.add("clicked"); }, 24); } else { console.log('jumpscareconsent flag disabled'); } }
+document.addEventListener("DOMContentLoaded", function() { jscs(); }); document.getElementById("jumpsconsbtn").addEventListener("click", function() { const oldjumpscares = localStorage.getItem("jumpscareconsent");
+if (oldjumpscares === "true") { localStorage.removeItem("jumpscareconsent"); } else { localStorage.setItem("jumpscareconsent", "true"); } jscs(); });
+
+document.getElementById('start').addEventListener("click", load); function load() { this.classList.add('clicked'); loadimages(imageUrls); loadsounds(soundUrls); showLoadingText(); setTimeout(() => { document.querySelector('subsequent').style.visibility = 'visible'; document.querySelector('initial').style.display = 'none'; }, 256); localStorage.setItem('firstvisit', 'false'); } 
+
+function checkscreenwidth() { var screenWidth = window.innerWidth; if (screenWidth < 1024) { document.getElementById('screensizewarning').style.display = 'block' } } window.onload = function () { checkscreenwidth(); };
+document.getElementById('ctnec').addEventListener("click", centc); function centc() { document.getElementById('screensizewarning').style.display = 'none' } </script>
